@@ -143,6 +143,8 @@ def handle_message(event):
 #                     if not j=='msg':
 #                         reportData[groupID][i].pop(j, None)
             LineMessage = "已清除所有時間"
+        elif '現在時間' in receivedmsg and len(receivedmsg)==4:
+            LineMessage = time
             
         elif '資料統計' in receivedmsg and len(receivedmsg)==4:
             try:
