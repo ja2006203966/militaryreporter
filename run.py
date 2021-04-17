@@ -143,7 +143,7 @@ def handle_message(event):
             LineMessage = "關閉自動回報"
         elif '手動回報' in receivedmsg and '選擇時間' in receivedmsg:
             try:
-                t = receivedmsg.split('選擇時間:')[-1]
+                t = receivedmsg.split('選擇時間')[-1][1:]
                 num =[i for i in reportData[groupID].keys() if isinstance(i, int)]
                 for data in [reportData[groupID][number] for number in sorted(num)]:
                      LineMessage = LineMessage + data[t] +'\n\n'
