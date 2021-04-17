@@ -51,6 +51,7 @@ def handle_message(event):
             for data in [reportData[groupID][number] for number in sorted(reportData[groupID].keys())]:
                 message = TextSendMessage(text=data[time])
                 line_bot_api.reply_message(event.reply_token, message)
+                
         if not reportData.get(groupID): # 如果此群組為新加入，會創立一個新的儲存區
             reportData[groupID]={'time':[], '開始回報':0}
             
@@ -92,8 +93,6 @@ def handle_message(event):
                 '\n'
                 '指令\n' 
                 '----------\n'   
-#                 '•格式\n'
-#                 '->正確格式範例。\n'
                 '•設定回報時間\n'
                 '->設定回報時間。\n'
                 '->格式: \n'
