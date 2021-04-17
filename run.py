@@ -51,8 +51,8 @@ def handle_message(event):
             reportData[groupID]={'time':[], '開始回報':1}
         if time in reportData[groupID]['time'] and reportData[groupID]['開始回報']:
             num =[i for i in reportData[groupID].keys() if isinstance(i, int)]
-            for n in [reportData[groupID][number] for number in sorted(num)]:
-                message = TextSendMessage(text=reportData[groupID][n][time])
+            for data in [reportData[groupID][number] for number in sorted(num)]:
+                message = TextSendMessage(text=data[time])
                 line_bot_api.reply_message(event.reply_token, message)
             
         LineMessage = ''
@@ -133,9 +133,9 @@ def handle_message(event):
         elif '手動回報' in receivedmsg and len(receivedmsg)==4:
             try:
                 num =[i for i in reportData[groupID].keys() if isinstance(i, int)]
-                for n in [reportData[groupID][number] for number in sorted(num)]:
+                for data in [reportData[groupID][number] for number in sorted(num)]:
                     t = list(reportData[groupID][n].keys())[-1]
-                    message = TextSendMessage(text=reportData[groupID][n][t])
+                    message = TextSendMessage(text=data[t])
                     line_bot_api.reply_message(event.reply_token, message)
                     
             except BaseException as err:
