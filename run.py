@@ -80,7 +80,7 @@ def handle_message(event):
             else:
 #                 reportData[groupID][ID] = receivedmsg
                 reportData[groupID][ID] = {'msg':''}
-                reportData[groupID][ID]['msg'] = receivedmsg
+                reportData[groupID][ID]['msg'] = receivedmsg.split('建立資料\n')[-1]
 #                 reportData[groupID][ID]['data']
 
                 LineMessage = str(ID)+'號弟兄，成功建立資料庫。'
