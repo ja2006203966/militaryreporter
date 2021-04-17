@@ -61,7 +61,7 @@ def handle_message(event):
                 if ( # 檢查資料是否有填，字數注意有換行符
                     len(receivedmsg.split('姓名')[-1].split('學號')[0])<3 and
                     len(receivedmsg.split("學號")[-1].split('手機')[0])<3 and 
-                    len(receivedmsg.split('手機')[-1].split('地點')[0])<12 and 
+                    len(receivedmsg.split('手機')[-1].split('地點')[0])<12
                     ):
                     raise Exception
                 # 得到學號
