@@ -85,7 +85,7 @@ def handle_message(event):
             else:
 #                 reportData[groupID][ID] = receivedmsg
                 reportData[groupID][ID] = {'msg':''}
-                reportData[groupID][ID]['msg'] = receivedmsg.split('建立資料\n')[-1] +'/n體溫:36.'+str(random.randint(0, 9))
+                reportData[groupID][ID]['msg'] = receivedmsg.split('建立資料\n')[-1] +'\n體溫:36.'+str(random.randint(0, 9))
 #                 reportData[groupID][ID]['data']
 
                 LineMessage = str(ID)+'號弟兄，成功建立資料庫。'
