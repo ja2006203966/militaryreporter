@@ -47,13 +47,12 @@ def handle_message(event):
         message = TextSendMessage(text='我只接收群組內訊息，請先把我邀請到群組!')
         line_bot_api.reply_message(event.reply_token, message)
     else:
+        if not reportData.get(groupID): # 如果此群組為新加入，會創立一個新的儲存區
+            reportData[groupID]={'time':[], '開始回報':0}
         if time in reportData[groupID]['time'] and reportData[groupID]['開始回報']:
             for data in [reportData[groupID][number] for number in sorted(reportData[groupID].keys())]:
                 message = TextSendMessage(text=data[time])
                 line_bot_api.reply_message(event.reply_token, message)
-                
-        if not reportData.get(groupID): # 如果此群組為新加入，會創立一個新的儲存區
-            reportData[groupID]={'time':[], '開始回報':0}
             
         LineMessage = ''
         receivedmsg = event.message.text
@@ -159,7 +158,7 @@ def handle_message(event):
 
 if __name__ == "__main__":
     global reportData
-    fornt = {"姓名":"", "學號":"", "手機":"","地點":"","開始回報":0}
+#     fornt = {"姓名":"", "學號":"", "手機":"","地點":"","開始回報":0}
     reportData = {}
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
