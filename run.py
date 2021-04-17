@@ -48,7 +48,7 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, message)
     else:
         if not reportData.get(groupID): # 如果此群組為新加入，會創立一個新的儲存區
-            reportData[groupID]={'time':[], '開始回報':1 ,'reported':[], 'day':None}
+            reportData[groupID]={'time':[], '開始回報':1 ,'reported':[], 'day':day}
         if not day == reportData[groupID]['day']:
             reportData[groupID]['day'] = day
             reportData[groupID]['reported'] = []
@@ -57,7 +57,7 @@ def handle_message(event):
                 reportData[groupID]['reported'].append(time[:-3])
                 num =[i for i in reportData[groupID].keys() if isinstance(i, int)]
                 for data in [reportData[groupID][number] for number in sorted(num)]:
-                    message = TextSendMessage(text=data[time])
+                    message = TextSendMessage(text=data[time[:-3]])
                     line_bot_api.reply_message(event.reply_token, message)
             except BaseException as err:
                 LineMessage = '錯誤原因: '+str(err)
@@ -151,8 +151,8 @@ def handle_message(event):
                 
             
         elif '清除資料' in receivedmsg and len(receivedmsg)==4:
-            reportData[groupID]['time'] = []
-            reportData[groupID] = {'time':[], '開始回報':1,'reported':[], 'day':None}
+#             reportData[groupID]['time'] = []
+            reportData[groupID] = {'time':[], '開始回報':1,'reported':[], 'day':day}
 #             for i in reportData[groupID].keys():
 #                 for j in reportData[groupID][i].keys():
 #                     if not j=='msg':
