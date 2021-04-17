@@ -152,7 +152,10 @@ def handle_message(event):
                     
 #             except BaseException as err:
 #                 LineMessage = '錯誤原因: '+str(err)
-                
+        elif '顯示回報時間' in receivedmsg and len(receivedmsg)==6:
+            LineMessage = '回報時間統計: '
+            for i in reportData[groupID]['time']:
+                LineMessage = LineMessage + i +'\n'
             
         elif '清除資料' in receivedmsg and len(receivedmsg)==4:
 #             reportData[groupID]['time'] = []
