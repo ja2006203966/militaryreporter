@@ -47,12 +47,12 @@ def handle_message(event):
         message = TextSendMessage(text='我只接收群組內訊息，請先把我邀請到群組!')
         line_bot_api.reply_message(event.reply_token, message)
     else:
-        if time in reportData[groupID].keys():
+        if time in reportData[groupID]['time'] and:
             for data in [reportData[groupID][number] for number in sorted(reportData[groupID].keys())]:
                 message = TextSendMessage(text=data[time])
                 line_bot_api.reply_message(event.reply_token, message)
         if not reportData.get(groupID): # 如果此群組為新加入，會創立一個新的儲存區
-            reportData[groupID]={}
+            reportData[groupID]={'time':[]}
             
         LineMessage = ''
         receivedmsg = event.message.text
@@ -120,6 +120,7 @@ def handle_message(event):
             ID = int(ID)
             msg =  receivedmsg.split("其餘內容")[-1]
             reportData[groupID][ID][time] = reportData[groupID][ID]['msg'] + '\n' + msg
+            reportData[groupID]['time'].append(time)
         elif '開始回報' in receivedmsg and len(receivedmsg)==4:
             reportData[groupID]["開始回報"]=1
         elif '關閉回報' in receivedmsg and len(receivedmsg)==4:
