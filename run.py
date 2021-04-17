@@ -137,9 +137,10 @@ def handle_message(event):
             
         elif '回報統計' in receivedmsg and len(receivedmsg)==4:
             try:
+                num =[i for i in reportData[groupID].keys() if isinstance(i, int)]
                 LineMessage = (
                     '完成回報的號碼有:\n'
-                    +str([number for number in sorted(reportData[groupID].keys())]).strip('[]')
+                    +str([number for number in sorted(num)]).strip('[]')
                 )
             except BaseException as err:
                 LineMessage = '錯誤原因: '+str(err)
