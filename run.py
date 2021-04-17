@@ -134,7 +134,7 @@ def handle_message(event):
             try:
                 num =[i for i in reportData[groupID].keys() if isinstance(i, int)]
                 for data in [reportData[groupID][number] for number in sorted(num)]:
-                    t = list(reportData[groupID][n].keys())[-1]
+                    t = list(data.keys())[-1]
                     message = TextSendMessage(text=data[t])
                     line_bot_api.reply_message(event.reply_token, message)
                     
