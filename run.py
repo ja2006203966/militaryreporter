@@ -120,6 +120,10 @@ def handle_message(event):
             msg =  receivedmsg.split("其餘內容")[-1]
             reportData[groupID][ID][time] = reportData[groupID][ID]['msg'] + '\n' + msg
             reportData[groupID]['time'].append(time)
+            LineMessage = (
+                '完成回報間設定:\n'
+                str(ID)+'弟兄,已設定時間:' + time + '\n'
+                )
         elif '開始回報' in receivedmsg and len(receivedmsg)==4:
             reportData[groupID]["開始回報"]=1
         elif '關閉回報' in receivedmsg and len(receivedmsg)==4:
