@@ -129,9 +129,9 @@ def handle_message(event):
             ID = receivedmsg.split("學號")[-1].split('設定時間')[0][1:]
             ID = int(ID)
             msg =  receivedmsg.split("其餘內容\n")[-1]
-            reportData[groupID][ID][time] = reportData[groupID][ID]['msg'] + '\n' + msg
-            reportData[groupID]['time'].append(time)
-            LineMessage = str(ID)+'號弟兄,已設定時間:' + time 
+            reportData[groupID][ID][time[:-3]] = reportData[groupID][ID]['msg'] + '\n' + msg
+            reportData[groupID]['time'].append(time[:-3])
+            LineMessage = str(ID)+'號弟兄,已設定時間:' + time[:-3] 
         elif '開始回報' in receivedmsg and len(receivedmsg)==4:
             reportData[groupID]["開始回報"]=1
             LineMessage = "開始自動回報"
