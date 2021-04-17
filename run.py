@@ -57,8 +57,9 @@ def handle_message(event):
                 reportData[groupID]['reported'].append(time[:-3])
                 num =[i for i in reportData[groupID].keys() if isinstance(i, int)]
                 for data in [reportData[groupID][number] for number in sorted(num)]:
-                    message = TextSendMessage(text=data[time[:-3]])
-                    line_bot_api.reply_message(event.reply_token, message)
+                    LineMessage = LineMessage + data +'\n\n'
+#                     message = TextSendMessage(text=data[time[:-3]])
+#                     line_bot_api.reply_message(event.reply_token, message)
             except BaseException as err:
                 LineMessage = '錯誤原因: '+str(err)
             
@@ -138,13 +139,14 @@ def handle_message(event):
         elif '關閉回報' in receivedmsg and len(receivedmsg)==4:
             reportData[groupID]["開始回報"]=0
             LineMessage = "關閉自動回報"
-        elif '手動回報' in receivedmsg and len(receivedmsg)==4:
+        elif '手動回報' in receivedmsg and '選擇時間' in receivedmsg:
             try:
+                t = receivedmsg.split('選擇時間:')[-1]
                 num =[i for i in reportData[groupID].keys() if isinstance(i, int)]
                 for data in [reportData[groupID][number] for number in sorted(num)]:
-                    t = list(data.keys())[-1]
-                    message = TextSendMessage(text=data[t])
-                    line_bot_api.reply_message(event.reply_token, message)
+                     LineMessage = LineMessage + data +'\n\n'
+#                     message = TextSendMessage(text=data[t])
+#                     line_bot_api.reply_message(event.reply_token, message)
                     
             except BaseException as err:
                 LineMessage = '錯誤原因: '+str(err)
