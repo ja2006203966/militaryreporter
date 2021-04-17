@@ -123,14 +123,17 @@ def handle_message(event):
             LineMessage = str(ID)+'號弟兄,已設定時間:' + time 
         elif '開始回報' in receivedmsg and len(receivedmsg)==4:
             reportData[groupID]["開始回報"]=1
+            LineMessage = "開始自動回報"
         elif '關閉回報' in receivedmsg and len(receivedmsg)==4:
             reportData[groupID]["開始回報"]=0
+            LineMessage = "關閉自動回報"
         elif '清除回報時間' in receivedmsg and len(receivedmsg)==6:
             reportData[groupID]['time'] = []
             for i in reportData[groupID]:
                 for j in reportData[groupID][i]:
                     if not i=='msg':
                         reportData[groupID][i].pop(j, None)
+            LineMessage = "已清除所有時間"
             
         elif '回報統計' in receivedmsg and len(receivedmsg)==4:
             try:
