@@ -120,7 +120,7 @@ def handle_message(event):
             time = receivedmsg.split('設定時間')[-1][1:9]
             ID = receivedmsg.split("學號")[-1].split('設定時間')[0][1:]
             ID = int(ID)
-            msg =  receivedmsg.split("其餘內容")[-1]
+            msg =  receivedmsg.split("其餘內容\n")[-1]
             reportData[groupID][ID][time] = reportData[groupID][ID]['msg'] + '\n' + msg
             reportData[groupID]['time'].append(time)
             LineMessage = str(ID)+'號弟兄,已設定時間:' + time 
