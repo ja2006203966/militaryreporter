@@ -109,7 +109,7 @@ def handle_message(event):
                 '->開始自動回報。\n'
                 '•關閉筆記\n'
                 '->關閉自動回報。\n'
-                '•清空 (等我更新)\n'
+                '•清除資料\n'
                 '->清空Data。\n'
                 '----------\n' 
             )
@@ -127,7 +127,7 @@ def handle_message(event):
         elif '關閉回報' in receivedmsg and len(receivedmsg)==4:
             reportData[groupID]["開始回報"]=0
             LineMessage = "關閉自動回報"
-        elif '清除回報時間' in receivedmsg and len(receivedmsg)==6:
+        elif '清除資料' in receivedmsg and len(receivedmsg)==6:
             reportData[groupID]['time'] = []
             for i in reportData[groupID].keys():
                 for j in reportData[groupID][i].keys():
