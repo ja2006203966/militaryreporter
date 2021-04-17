@@ -57,7 +57,7 @@ def handle_message(event):
                 reportData[groupID]['reported'].append(time[:-3])
                 num =[i for i in reportData[groupID].keys() if isinstance(i, int)]
                 for data in [reportData[groupID][number] for number in sorted(num)]:
-                    LineMessage = LineMessage + data +'\n\n'
+                    LineMessage = LineMessage + data[time[:-3]] +'\n\n'
 #                     message = TextSendMessage(text=data[time[:-3]])
 #                     line_bot_api.reply_message(event.reply_token, message)
             except BaseException as err:
@@ -85,7 +85,7 @@ def handle_message(event):
             else:
 #                 reportData[groupID][ID] = receivedmsg
                 reportData[groupID][ID] = {'msg':''}
-                reportData[groupID][ID]['msg'] = receivedmsg.split('建立資料\n')[-1]
+                reportData[groupID][ID]['msg'] = receivedmsg.split('建立資料\n')[-1] +'/n體溫:36.'+str(random.randint(0, 9))
 #                 reportData[groupID][ID]['data']
 
                 LineMessage = str(ID)+'號弟兄，成功建立資料庫。'
@@ -99,6 +99,7 @@ def handle_message(event):
                 '姓名：\n'
                 '學號：\n'
                 '手機：\n'
+                '(防疫期間會自動加入體溫)'
                 '----------\n'
                 '\n'
                 '指令\n' 
@@ -121,6 +122,7 @@ def handle_message(event):
                 '->關閉自動回報。\n'
                 '•手動回報\n'
                 '->手動回報。\n'
+                '->選擇時間:XX:XX。\n'
                 '•清除資料\n'
                 '->清空Data。\n'
                 '----------\n' 
@@ -144,7 +146,7 @@ def handle_message(event):
                 t = receivedmsg.split('選擇時間:')[-1]
                 num =[i for i in reportData[groupID].keys() if isinstance(i, int)]
                 for data in [reportData[groupID][number] for number in sorted(num)]:
-                     LineMessage = LineMessage + data +'\n\n'
+                     LineMessage = LineMessage + data[t] +'\n\n'
 #                     message = TextSendMessage(text=data[t])
 #                     line_bot_api.reply_message(event.reply_token, message)
                     
