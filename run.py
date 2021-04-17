@@ -36,7 +36,7 @@ def handle_message(event):
     dt1 = datetime.utcnow().replace(tzinfo=timezone.utc)
     dt2 = dt1.astimezone(timezone(timedelta(hours=8))) # 轉換時區 -> 東八區
     time = dt2.strftime("%H:%M:%S")
-    
+    day = dt2.strftime("%D")
     # 各群組的資訊互相獨立
 #     if fornt["開始回報"] and time in if fornt["回報時間"]:
     
@@ -48,9 +48,13 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, message)
     else:
         if not reportData.get(groupID): # 如果此群組為新加入，會創立一個新的儲存區
-            reportData[groupID]={'time':[], '開始回報':1}
-        if time in reportData[groupID]['time'] and reportData[groupID]['開始回報']:
+            reportData[groupID]={'time':[], '開始回報':1 ,'reported':[], 'day':None}
+        if not day == reportData[groupID]['day']:
+            reportData[groupID]['day'] = day
+            reportData[groupID]['reported'] = []
+        if time[:-3] in reportData[groupID]['time'] and reportData[groupID]['開始回報'] and time[:-3] not in reportData[groupID]['reported'] :
             try:
+                reportData[groupID]['reported'].append(time[:-3])
                 num =[i for i in reportData[groupID].keys() if isinstance(i, int)]
                 for data in [reportData[groupID][number] for number in sorted(num)]:
                     message = TextSendMessage(text=data[time])
@@ -148,7 +152,7 @@ def handle_message(event):
             
         elif '清除資料' in receivedmsg and len(receivedmsg)==4:
             reportData[groupID]['time'] = []
-            reportData[groupID] = {'time':[], '開始回報':1}
+            reportData[groupID] = {'time':[], '開始回報':1,'reported':[], 'day':None}
 #             for i in reportData[groupID].keys():
 #                 for j in reportData[groupID][i].keys():
 #                     if not j=='msg':
