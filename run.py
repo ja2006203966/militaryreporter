@@ -131,7 +131,7 @@ def handle_message(event):
             reportData[groupID]['time'] = []
             for i in reportData[groupID]:
                 for j in reportData[groupID][i]:
-                    if not i=='msg':
+                    if not j=='msg':
                         reportData[groupID][i].pop(j, None)
             LineMessage = "已清除所有時間"
             
