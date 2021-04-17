@@ -142,16 +142,16 @@ def handle_message(event):
             reportData[groupID]["開始回報"]=0
             LineMessage = "關閉自動回報"
         elif '手動回報' in receivedmsg and '選擇時間' in receivedmsg:
-            try:
-                t = receivedmsg.split('選擇時間:')[-1][:5]
-                num =[i for i in reportData[groupID].keys() if isinstance(i, int)]
-                for data in [reportData[groupID][number] for number in sorted(num)]:
-                    LineMessage = LineMessage + data[t] +'\n\n'
+            #             try:
+            t = receivedmsg.split('選擇時間:')[-1][:5]
+            num =[i for i in reportData[groupID].keys() if isinstance(i, int)]
+            for data in [reportData[groupID][number] for number in sorted(num)]:
+                LineMessage = LineMessage + data[t] +'\n\n'
 #                     message = TextSendMessage(text=data[t])
 #                     line_bot_api.reply_message(event.reply_token, message)
                     
-            except BaseException as err:
-                LineMessage = '錯誤原因: '+str(err)
+#             except BaseException as err:
+#                 LineMessage = '錯誤原因: '+str(err)
                 
             
         elif '清除資料' in receivedmsg and len(receivedmsg)==4:
