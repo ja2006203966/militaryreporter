@@ -51,8 +51,8 @@ def handle_message(event):
             reportData[groupID]={'time':[], '開始回報':0}
         if time in reportData[groupID]['time'] and reportData[groupID]['開始回報']:
             num =[i for i in reportData[groupID].keys() if isinstance(i, int)]
-            for data in [reportData[groupID][number] for number in sorted(num)]:
-                message = TextSendMessage(text=data[time])
+            for n in [reportData[groupID][number] for number in sorted(num)]:
+                message = TextSendMessage(text=reportData[groupID][n][time])
                 line_bot_api.reply_message(event.reply_token, message)
             
         LineMessage = ''
@@ -132,8 +132,8 @@ def handle_message(event):
             LineMessage = "關閉自動回報"
         elif '手動回報' in receivedmsg and len(receivedmsg)==4:
             num =[i for i in reportData[groupID].keys() if isinstance(i, int)]
-            for data in [reportData[groupID][number] for number in sorted(num)]:
-                message = TextSendMessage(text=data[time])
+            for n in [reportData[groupID][number] for number in sorted(num)]:
+                message = TextSendMessage(text=reportData[groupID][n][time])
                 line_bot_api.reply_message(event.reply_token, message)
         elif '清除資料' in receivedmsg and len(receivedmsg)==4:
             reportData[groupID]['time'] = []
