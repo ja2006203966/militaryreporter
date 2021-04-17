@@ -129,8 +129,8 @@ def handle_message(event):
             LineMessage = "關閉自動回報"
         elif '清除回報時間' in receivedmsg and len(receivedmsg)==6:
             reportData[groupID]['time'] = []
-            for i in reportData[groupID]:
-                for j in reportData[groupID][i]:
+            for i in reportData[groupID].keys():
+                for j in reportData[groupID][i].keys():
                     if not j=='msg':
                         reportData[groupID][i].pop(j, None)
             LineMessage = "已清除所有時間"
