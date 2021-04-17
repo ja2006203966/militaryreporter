@@ -74,6 +74,7 @@ def handle_message(event):
                 LineMessage = '姓名、學號、手機，其中一項未填。'    
             else:
 #                 reportData[groupID][ID] = receivedmsg
+                reportData[groupID][ID] = {'msg':''}
                 reportData[groupID][ID]['msg'] = receivedmsg
 #                 reportData[groupID][ID]['data']
 
@@ -123,6 +124,12 @@ def handle_message(event):
             reportData[groupID]["開始回報"]=1
         elif '關閉回報' in receivedmsg and len(receivedmsg)==4:
             reportData[groupID]["開始回報"]=0
+        elif '清除回報時間' in receivedmsg and len(receivedmsg)==6:
+            reportData[groupID]['time'] = []
+            for i in reportData[groupID]:
+                for j in reportData[groupID][i]:
+                    if not i=='msg':
+                        reportData[groupID][i].pop(j, None)
             
         elif '回報統計' in receivedmsg and len(receivedmsg)==4:
             try:
