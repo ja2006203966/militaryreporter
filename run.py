@@ -50,10 +50,14 @@ def handle_message(event):
         if not reportData.get(groupID): # 如果此群組為新加入，會創立一個新的儲存區
             reportData[groupID]={'time':[], '開始回報':1}
         if time in reportData[groupID]['time'] and reportData[groupID]['開始回報']:
-            num =[i for i in reportData[groupID].keys() if isinstance(i, int)]
-            for data in [reportData[groupID][number] for number in sorted(num)]:
-                message = TextSendMessage(text=data[time])
-                line_bot_api.reply_message(event.reply_token, message)
+            try:
+                num =[i for i in reportData[groupID].keys() if isinstance(i, int)]
+                for data in [reportData[groupID][number] for number in sorted(num)]:
+                    message = TextSendMessage(text=data[time])
+                    line_bot_api.reply_message(event.reply_token, message)
+            except BaseException as err:
+                LineMessage = '錯誤原因: '+str(err)
+            
             
         LineMessage = ''
         receivedmsg = event.message.text
