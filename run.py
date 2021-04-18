@@ -39,9 +39,6 @@ def handle_message(event):
     now = int(dt2.strftime("%H"))*60 + int(dt2.strftime("%M"))
     day = dt2.strftime("%D")
     # 各群組的資訊互相獨立
-#     if fornt["開始回報"] and time in if fornt["回報時間"]:
-    
-        
     try:
         groupID = event.source.group_id
     except: # 此機器人設計給群組回報，單兵不可直接一對一回報給機器人
@@ -58,7 +55,7 @@ def handle_message(event):
         elif not reportData[groupID]['notify']:
             reportData[groupID]['notify'] = 999999
         notify = reportData[groupID]['notify']
-        elif now in range(notify, notify+5) and reportData[groupID]["開始回報"]:
+        if (now in range(notify, notify+5)) and reportData[groupID]["開始回報"]:
             num = [i for i in reportData[groupID].keys() if isinstance(i, int)]
             for data in [reportData[groupID][number] for number in sorted(num)]:
                 LineMessage = LineMessage + data[notify] +'\n\n'
@@ -80,7 +77,7 @@ def handle_message(event):
             
         LineMessage = ''
         receivedmsg = event.message.text
-        elif '建立資料' in receivedmsg and '姓名' in receivedmsg and '學號' in receivedmsg and '手機' in receivedmsg:
+        if '建立資料' in receivedmsg and '姓名' in receivedmsg and '學號' in receivedmsg and '手機' in receivedmsg:
             try:
                 if ( # 檢查資料是否有填，字數注意有換行符
                     len(receivedmsg.split('姓名')[-1].split('學號')[0])<3 and
