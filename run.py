@@ -54,7 +54,7 @@ def handle_message(event):
             reportData[groupID]['day'] = day
             reportData[groupID]['reported'] = []
         for t in reportData[groupID]['time']:
-            if T >= t and reportData[groupID]['開始回報'] and t not in reportData[groupID]['reported'] :
+            if T in range(t,t+60) and t not in reportData[groupID]['reported'] :
                 try:
                     reportData[groupID]['reported'].append(t)
                     num =[i for i in reportData[groupID].keys() if isinstance(i, int)]
