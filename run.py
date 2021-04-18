@@ -38,7 +38,10 @@ def handle_message(event):
     time = dt2.strftime("%H:%M:%S")
     now = int(dt2.strftime("%H"))*60 + int(dt2.strftime("%M"))
     day = dt2.strftime("%D")
-    clock = min(reportData[groupID]['clock'])
+    if reportData[groupID]['clock']:
+        clock = min(reportData[groupID]['clock'])
+    else:
+        clock = 999999999
     # 各群組的資訊互相獨立
 #     if fornt["開始回報"] and time in if fornt["回報時間"]:
     
