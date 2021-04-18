@@ -144,18 +144,21 @@ def handle_message(event):
                 '----------\n' 
             )
         elif '設定回報時間' in receivedmsg and '設定時間' in receivedmsg and '其餘內容' in receivedmsg:
-            settime = receivedmsg.split('設定時間')[-1][1:9]
-            nsettime = int(settime[:2])*60+int(settime[3:5])
-            ID = receivedmsg.split("學號")[-1].split('設定時間')[0][1:]
-            ID = int(ID)
-            msg =  receivedmsg.split("其餘內容\n")[-1]
-            reportData[groupID][ID][nsettime] = reportData[groupID][ID]['msg'] + '\n' + msg
-            reportData[groupID]['time'].append(nsettime)
-            reportData[groupID]['time'] = sorted(reportData[groupID]['time'])
-            if nsettime < now:
-                reportData[groupID]['reported'].append(nsettime)
-            reportData[groupID]['clock'] = set(reportData[groupID]['time'] ) - set(reportData[groupID]['reported'])
-            LineMessage = str(ID)+'號弟兄,已設定時間:' + settime[:-3] 
+            try:
+                settime = receivedmsg.split('設定時間')[-1][1:9]
+                nsettime = int(settime[:2])*60+int(settime[3:5])
+                ID = receivedmsg.split("學號")[-1].split('設定時間')[0][1:]
+                ID = int(ID)
+                msg =  receivedmsg.split("其餘內容\n")[-1]
+                reportData[groupID][ID][nsettime] = reportData[groupID][ID]['msg'] + '\n' + msg
+                reportData[groupID]['time'].append(nsettime)
+                reportData[groupID]['time'] = sorted(reportData[groupID]['time'])
+                if nsettime < now:
+                    reportData[groupID]['reported'].append(nsettime)
+                reportData[groupID]['clock'] = set(reportData[groupID]['time'] ) - set(reportData[groupID]['reported'])
+                LineMessage = str(ID)+'號弟兄,已設定時間:' + settime[:-3] 
+            except BaseException as err:
+                LineMessage = '錯誤原因: '+str(err)
 #         elif '設定回報時間' in receivedmsg and '設定時間' in receivedmsg and '其餘內容' in receivedmsg:
 #             time = receivedmsg.split('設定時間')[-1][1:9]
 #             ID = receivedmsg.split("學號")[-1].split('設定時間')[0][1:]
