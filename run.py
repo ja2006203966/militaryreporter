@@ -50,7 +50,7 @@ def handle_message(event):
     else:
         if not reportData.get(groupID): # 如果此群組為新加入，會創立一個新的儲存區
             reportData[groupID]={'time':[], '開始回報':1 ,'reported':[], 'day':day, 'clock':set()}
-        elif not len(list(reportData[groupID]['clock'])) == 0:
+        elif reportData[groupID]['clock']:
             reportData[groupID]['notify'] = list(reportData[groupID]['clock'])[0]
         elif not day == reportData[groupID]['day']:
             reportData[groupID]['day'] = day
