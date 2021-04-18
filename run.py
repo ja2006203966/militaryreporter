@@ -50,22 +50,19 @@ def handle_message(event):
     else:
         if not reportData.get(groupID): # 如果此群組為新加入，會創立一個新的儲存區
             reportData[groupID]={'time':[], '開始回報':1 ,'reported':[], 'day':day, 'clock':set()}
-        elif reportData[groupID]['clock']:
+        if reportData[groupID]['clock']:
             reportData[groupID]['notify'] = list(reportData[groupID]['clock'])[0]
-        elif not day == reportData[groupID]['day']:
+        if not day == reportData[groupID]['day']:
             reportData[groupID]['day'] = day
             reportData[groupID]['reported'] = []
-        elif not reportData[groupID]['notify']:
+        if not reportData[groupID]['notify']:
             reportData[groupID]['notify'] = 999999
-        elif now in range(reportData[groupID]['notify'], reportData[groupID]['notify']+5) and reportData[groupID]["開始回報"]:
+        if now in range(reportData[groupID]['notify'], reportData[groupID]['notify']+5) and reportData[groupID]["開始回報"]:
             num = [i for i in reportData[groupID].keys() if isinstance(i, int)]
-            try:
-                for data in [reportData[groupID][number] for number in sorted(num)]:
-                    LineMessage = LineMessage + data[reportData[groupID]['notify']] +'\n\n'
-                reportData[groupID]['reported'].append(reportData[groupID]['notify'])
-                reportData[groupID]['clock'] = set(reportData[groupID]['time'] ) - set(reportData[groupID]['reported'])
-            except BaseException as err:
-                LineMessage = '錯誤原因: '+str(err)
+            for data in [reportData[groupID][number] for number in sorted(num)]:
+                LineMessage = LineMessage + data[reportData[groupID]['notify']] +'\n\n'
+            reportData[groupID]['reported'].append(reportData[groupID]['notify'])
+            reportData[groupID]['clock'] = set(reportData[groupID]['time'] ) - set(reportData[groupID]['reported'])
                 
         
 #         if time[:-3] in reportData[groupID]['time'] and reportData[groupID]['開始回報'] and time[:-3] not in reportData[groupID]['reported'] :
@@ -151,11 +148,11 @@ def handle_message(event):
                 ID = int(ID)
                 msg =  receivedmsg.split("其餘內容\n")[-1]
                 reportData[groupID][ID][nsettime] = reportData[groupID][ID]['msg'] + '\n' + msg
-#                 reportData[groupID]['time'].append(nsettime)
-#                 reportData[groupID]['time'] = sorted(reportData[groupID]['time'])
-#                 if nsettime < now:
-#                     reportData[groupID]['reported'].append(nsettime)
-#                 reportData[groupID]['clock'] = set(reportData[groupID]['time'] ) - set(reportData[groupID]['reported'])
+                reportData[groupID]['time'].append(nsettime)
+                reportData[groupID]['time'] = sorted(reportData[groupID]['time'])
+                if nsettime < now:
+                    reportData[groupID]['reported'].append(nsettime)
+                reportData[groupID]['clock'] = set(reportData[groupID]['time'] ) - set(reportData[groupID]['reported'])
                 LineMessage = str(ID)+'號弟兄,已設定時間:' + settime[:-3] 
             except BaseException as err:
                 LineMessage = '錯誤原因: '+str(err)
