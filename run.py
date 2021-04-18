@@ -36,6 +36,7 @@ def handle_message(event):
     dt1 = datetime.utcnow().replace(tzinfo=timezone.utc)
     dt2 = dt1.astimezone(timezone(timedelta(hours=8))) # 轉換時區 -> 東八區
     time = dt2.strftime("%H:%M:%S")
+    T = int(time[:2])*60 + int(time[3:5])
     day = dt2.strftime("%D")
     # 各群組的資訊互相獨立
 #     if fornt["開始回報"] and time in if fornt["回報時間"]:
@@ -52,16 +53,25 @@ def handle_message(event):
         if not day == reportData[groupID]['day']:
             reportData[groupID]['day'] = day
             reportData[groupID]['reported'] = []
-        if time[:-3] in reportData[groupID]['time'] and reportData[groupID]['開始回報'] and time[:-3] not in reportData[groupID]['reported'] :
-            try:
-                reportData[groupID]['reported'].append(time[:-3])
-                num =[i for i in reportData[groupID].keys() if isinstance(i, int)]
-                for data in [reportData[groupID][number] for number in sorted(num)]:
-                    LineMessage = LineMessage + data[time[:-3]] +'\n\n'
-#                     message = TextSendMessage(text=data[time[:-3]])
-#                     line_bot_api.reply_message(event.reply_token, message)
-            except BaseException as err:
-                LineMessage = '錯誤原因: '+str(err)
+        for t in reportData[groupID]['time']:
+            if T >= t and reportData[groupID]['開始回報'] and t not in reportData[groupID]['reported'] :
+                try:
+                    reportData[groupID]['reported'].append(t)
+                    num =[i for i in reportData[groupID].keys() if isinstance(i, int)]
+                    for data in [reportData[groupID][number] for number in sorted(num)]:
+                        LineMessage = LineMessage + data[t] +'\n\n'
+                except BaseException as err:
+                    LineMessage = '錯誤原因: '+str(err)
+#         if time[:-3] in reportData[groupID]['time'] and reportData[groupID]['開始回報'] and time[:-3] not in reportData[groupID]['reported'] :
+#             try:
+#                 reportData[groupID]['reported'].append(time[:-3])
+#                 num =[i for i in reportData[groupID].keys() if isinstance(i, int)]
+#                 for data in [reportData[groupID][number] for number in sorted(num)]:
+#                     LineMessage = LineMessage + data[time[:-3]] +'\n\n'
+# #                     message = TextSendMessage(text=data[time[:-3]])
+# #                     line_bot_api.reply_message(event.reply_token, message)
+#             except BaseException as err:
+#                 LineMessage = '錯誤原因: '+str(err)
             
             
         LineMessage = ''
@@ -128,30 +138,46 @@ def handle_message(event):
                 '----------\n' 
             )
         elif '設定回報時間' in receivedmsg and '設定時間' in receivedmsg and '其餘內容' in receivedmsg:
-            time = receivedmsg.split('設定時間')[-1][1:9]
+            settime = receivedmsg.split('設定時間')[-1][1:9]
+            nsettime = int(settime[:2])*60+int(settime[3:5])
             ID = receivedmsg.split("學號")[-1].split('設定時間')[0][1:]
             ID = int(ID)
             msg =  receivedmsg.split("其餘內容\n")[-1]
-            reportData[groupID][ID][time[:-3]] = reportData[groupID][ID]['msg'] + '\n' + msg
-            reportData[groupID]['time'].append(time[:-3])
-            LineMessage = str(ID)+'號弟兄,已設定時間:' + time[:-3] 
+            reportData[groupID][ID][nsettime] = reportData[groupID][ID]['msg'] + '\n' + msg
+            reportData[groupID]['time'].append(nsettime)
+            LineMessage = str(ID)+'號弟兄,已設定時間:' + settime[:-3] 
+#         elif '設定回報時間' in receivedmsg and '設定時間' in receivedmsg and '其餘內容' in receivedmsg:
+#             time = receivedmsg.split('設定時間')[-1][1:9]
+#             ID = receivedmsg.split("學號")[-1].split('設定時間')[0][1:]
+#             ID = int(ID)
+#             msg =  receivedmsg.split("其餘內容\n")[-1]
+#             reportData[groupID][ID][time[:-3]] = reportData[groupID][ID]['msg'] + '\n' + msg
+#             reportData[groupID]['time'].append(time[:-3])
+#             LineMessage = str(ID)+'號弟兄,已設定時間:' + time[:-3] 
         elif '開始回報' in receivedmsg and len(receivedmsg)==4:
             reportData[groupID]["開始回報"]=1
             LineMessage = "開始自動回報"
         elif '關閉回報' in receivedmsg and len(receivedmsg)==4:
             reportData[groupID]["開始回報"]=0
             LineMessage = "關閉自動回報"
+        
         elif '手動回報' in receivedmsg and '選擇時間' in receivedmsg:
-            #             try:
             t = receivedmsg.split('選擇時間')[-1][1:6]
+            t = int(t[:2])*60 + int(t[3:5])
             num =[i for i in reportData[groupID].keys() if isinstance(i, int)]
             for data in [reportData[groupID][number] for number in sorted(num)]:
                 LineMessage = LineMessage + data[t] +'\n\n'
-#                     message = TextSendMessage(text=data[t])
-#                     line_bot_api.reply_message(event.reply_token, message)
+#         elif '手動回報' in receivedmsg and '選擇時間' in receivedmsg:
+#             #             try:
+#             t = receivedmsg.split('選擇時間')[-1][1:6]
+#             num =[i for i in reportData[groupID].keys() if isinstance(i, int)]
+#             for data in [reportData[groupID][number] for number in sorted(num)]:
+#                 LineMessage = LineMessage + data[t] +'\n\n'
+# #                     message = TextSendMessage(text=data[t])
+# #                     line_bot_api.reply_message(event.reply_token, message)
                     
-#             except BaseException as err:
-#                 LineMessage = '錯誤原因: '+str(err)
+# #             except BaseException as err:
+# #                 LineMessage = '錯誤原因: '+str(err)
         elif '顯示回報時間' in receivedmsg and len(receivedmsg)==6:
             LineMessage = '回報時間統計: '
             for i in reportData[groupID]['time']:
