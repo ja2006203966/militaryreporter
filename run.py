@@ -38,7 +38,6 @@ def handle_message(event):
     time = dt2.strftime("%H:%M:%S")
     now = int(dt2.strftime("%H"))*60 + int(dt2.strftime("%M"))
     day = dt2.strftime("%D")
-    clock = 999999
     # 各群組的資訊互相獨立
 #     if fornt["開始回報"] and time in if fornt["回報時間"]:
     
@@ -52,16 +51,18 @@ def handle_message(event):
         if not reportData.get(groupID): # 如果此群組為新加入，會創立一個新的儲存區
             reportData[groupID]={'time':[], '開始回報':1 ,'reported':[], 'day':day, 'clock':set()}
         elif not len(list(reportData[groupID]['clock'])) == 0:
-            clock = list(reportData[groupID]['clock'])[0]
+            reportData[groupID]['notify'] = list(reportData[groupID]['clock'])[0]
         elif not day == reportData[groupID]['day']:
             reportData[groupID]['day'] = day
             reportData[groupID]['reported'] = []
-        elif now in range(clock, clock+5) and reportData[groupID]["開始回報"]:
+        elif not reportData[groupID]['notify']:
+            reportData[groupID]['notify'] = 999999
+        elif now in range(reportData[groupID]['notify'], reportData[groupID]['notify']+5) and reportData[groupID]["開始回報"]:
             num = [i for i in reportData[groupID].keys() if isinstance(i, int)]
             try:
                 for data in [reportData[groupID][number] for number in sorted(num)]:
-                    LineMessage = LineMessage + data[clock] +'\n\n'
-                reportData[groupID]['reported'].append(clock)
+                    LineMessage = LineMessage + data[reportData[groupID]['notify']] +'\n\n'
+                reportData[groupID]['reported'].append(reportData[groupID]['notify'])
                 reportData[groupID]['clock'] = set(reportData[groupID]['time'] ) - set(reportData[groupID]['reported'])
             except BaseException as err:
                 LineMessage = '錯誤原因: '+str(err)
@@ -149,13 +150,11 @@ def handle_message(event):
             ID = int(ID)
             msg =  receivedmsg.split("其餘內容\n")[-1]
             reportData[groupID][ID][nsettime] = reportData[groupID][ID]['msg'] + '\n' + msg
-#             if not isinstance(reportData[groupID]['time'], list) or not isinstance(reportData[groupID]['reported'], list):
-#                 reportData[groupID]={'time':[], '開始回報':1 ,'reported':[], 'day':day}
             reportData[groupID]['time'].append(nsettime)
             reportData[groupID]['time'] = sorted(reportData[groupID]['time'])
             if nsettime < now:
                 reportData[groupID]['reported'].append(nsettime)
-            reportData[groupID]['clock'] = set(reportData[groupID]['time'] ) - set(reportData[groupID]['reported'])
+            reportData[groupID]['clock'] = list(set(reportData[groupID]['time'] ) - set(reportData[groupID]['reported']))
             LineMessage = str(ID)+'號弟兄,已設定時間:' + settime[:-3] 
 #         elif '設定回報時間' in receivedmsg and '設定時間' in receivedmsg and '其餘內容' in receivedmsg:
 #             time = receivedmsg.split('設定時間')[-1][1:9]
