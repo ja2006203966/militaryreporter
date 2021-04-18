@@ -154,7 +154,7 @@ def handle_message(event):
             reportData[groupID]['time'] = sorted(reportData[groupID]['time'])
             if nsettime < now:
                 reportData[groupID]['reported'].append(nsettime)
-            reportData[groupID]['clock'] = list(set(reportData[groupID]['time'] ) - set(reportData[groupID]['reported']))
+            reportData[groupID]['clock'] = set(reportData[groupID]['time'] ) - set(reportData[groupID]['reported'])
             LineMessage = str(ID)+'號弟兄,已設定時間:' + settime[:-3] 
 #         elif '設定回報時間' in receivedmsg and '設定時間' in receivedmsg and '其餘內容' in receivedmsg:
 #             time = receivedmsg.split('設定時間')[-1][1:9]
