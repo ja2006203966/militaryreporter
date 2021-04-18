@@ -155,7 +155,7 @@ def handle_message(event):
                 reportData[groupID]['time'] = sorted(reportData[groupID]['time'])
                 if nsettime < now:
                     reportData[groupID]['reported'].append(nsettime)
-                reportData[groupID]['clock'] = set(reportData[groupID]['time'] ) - set(reportData[groupID]['reported'])
+#                 reportData[groupID]['clock'] = set(reportData[groupID]['time'] ) - set(reportData[groupID]['reported'])
                 LineMessage = str(ID)+'號弟兄,已設定時間:' + settime[:-3] 
             except BaseException as err:
                 LineMessage = '錯誤原因: '+str(err)
