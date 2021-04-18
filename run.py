@@ -38,7 +38,7 @@ def handle_message(event):
     time = dt2.strftime("%H:%M:%S")
     now = int(dt2.strftime("%H"))*60 + int(dt2.strftime("%M"))
     day = dt2.strftime("%D")
-    
+    clock = 999999
     # 各群組的資訊互相獨立
 #     if fornt["開始回報"] and time in if fornt["回報時間"]:
     
@@ -51,21 +51,20 @@ def handle_message(event):
     else:
         if not reportData.get(groupID): # 如果此群組為新加入，會創立一個新的儲存區
             reportData[groupID]={'time':[], '開始回報':1 ,'reported':[], 'day':day, 'clock':set()}
-        clock = list(reportData[groupID]['clock'])[0] if len(list(reportData[groupID]['clock'])) != 0 else 99999
+        elif not len(list(reportData[groupID]['clock'])) == 0:
+            clock = list(reportData[groupID]['clock'])[0]
         elif not day == reportData[groupID]['day']:
             reportData[groupID]['day'] = day
             reportData[groupID]['reported'] = []
-#         if not isinstance(reportData[groupID]['time'], list) or not isinstance(reportData[groupID]['reported'], list):
-#             reportData[groupID]={'time':[], '開始回報':1 ,'reported':[], 'day':day}
         elif now in range(clock, clock+5) and reportData[groupID]["開始回報"]:
-            num =[i for i in reportData[groupID].keys() if isinstance(i, int)]
-                try:
-                    for data in [reportData[groupID][number] for number in sorted(num)]:
-                        LineMessage = LineMessage + data[clock] +'\n\n'
-                    reportData[groupID]['reported'].append(clock)
-                    reportData[groupID]['clock'] = set(reportData[groupID]['time'] ) - set(reportData[groupID]['reported'])
-                except BaseException as err:
-                    LineMessage = '錯誤原因: '+str(err)
+            num = [i for i in reportData[groupID].keys() if isinstance(i, int)]
+            try:
+                for data in [reportData[groupID][number] for number in sorted(num)]:
+                    LineMessage = LineMessage + data[clock] +'\n\n'
+                reportData[groupID]['reported'].append(clock)
+                reportData[groupID]['clock'] = set(reportData[groupID]['time'] ) - set(reportData[groupID]['reported'])
+            except BaseException as err:
+                LineMessage = '錯誤原因: '+str(err)
                 
         
 #         if time[:-3] in reportData[groupID]['time'] and reportData[groupID]['開始回報'] and time[:-3] not in reportData[groupID]['reported'] :
