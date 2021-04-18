@@ -57,11 +57,12 @@ def handle_message(event):
             reportData[groupID]['reported'] = []
         if not reportData[groupID]['notify']:
             reportData[groupID]['notify'] = 999999
-        if now in range(reportData[groupID]['notify'], reportData[groupID]['notify']+5) and reportData[groupID]["開始回報"]:
+        notify = reportData[groupID]['notify']
+        if now in range(notify, notify+5) and reportData[groupID]["開始回報"]:
             num = [i for i in reportData[groupID].keys() if isinstance(i, int)]
             for data in [reportData[groupID][number] for number in sorted(num)]:
-                LineMessage = LineMessage + data[reportData[groupID]['notify']] +'\n\n'
-            reportData[groupID]['reported'].append(reportData[groupID]['notify'])
+                LineMessage = LineMessage + data[notify] +'\n\n'
+            reportData[groupID]['reported'].append(notify)
             reportData[groupID]['clock'] = set(reportData[groupID]['time'] ) - set(reportData[groupID]['reported'])
                 
         
