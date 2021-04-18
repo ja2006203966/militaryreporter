@@ -36,7 +36,7 @@ def handle_message(event):
     dt1 = datetime.utcnow().replace(tzinfo=timezone.utc)
     dt2 = dt1.astimezone(timezone(timedelta(hours=8))) # 轉換時區 -> 東八區
     time = dt2.strftime("%H:%M:%S")
-    T = int(time[:2])*60 + int(time[3:5])
+    now = int(time[:2])*60 + int(time[3:5])
     day = dt2.strftime("%D")
     # 各群組的資訊互相獨立
 #     if fornt["開始回報"] and time in if fornt["回報時間"]:
@@ -54,8 +54,9 @@ def handle_message(event):
             reportData[groupID]['day'] = day
             reportData[groupID]['reported'] = []
         if isinstance(reportData[groupID]['time'], list):
+            LineMessage = '開始自動回報 \n'
             for t in reportData[groupID]['time']:
-                if T in range(t-1,t+60) and (not t in reportData[groupID]['reported']) :
+                if now in range(t-1,t+60) and (not t in reportData[groupID]['reported']) :
                     reportData[groupID]['reported'].append(t)
                     num =[i for i in reportData[groupID].keys() if isinstance(i, int)]
                     for data in [reportData[groupID][number] for number in sorted(num)]:
