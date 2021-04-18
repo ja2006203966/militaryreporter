@@ -55,12 +55,12 @@ def handle_message(event):
             reportData[groupID]['reported'] = []
         if isinstance(reportData[groupID]['time'], list):
             for t in reportData[groupID]['time']:
-                if T in range(t,t+60) and t not in reportData[groupID]['reported'] :
+                if T in range(t-1,t+60) and (not t in reportData[groupID]['reported']) :
                     reportData[groupID]['reported'].append(t)
                     num =[i for i in reportData[groupID].keys() if isinstance(i, int)]
                     for data in [reportData[groupID][number] for number in sorted(num)]:
                         LineMessage = LineMessage + data[t] +'\n\n'
-        if not isinstance(reportData[groupID]['time'], list):
+        if not isinstance(reportData[groupID]['time'], list) or not isinstance(reportData[groupID]['reported'], list):
             reportData[groupID]={'time':[], '開始回報':1 ,'reported':[], 'day':day}
 #         if time[:-3] in reportData[groupID]['time'] and reportData[groupID]['開始回報'] and time[:-3] not in reportData[groupID]['reported'] :
 #             try:
@@ -144,8 +144,8 @@ def handle_message(event):
             ID = int(ID)
             msg =  receivedmsg.split("其餘內容\n")[-1]
             reportData[groupID][ID][nsettime] = reportData[groupID][ID]['msg'] + '\n' + msg
-            if not isinstance(reportData[groupID]['time'], list):
-                reportData[groupID]['time'] = []
+            if not isinstance(reportData[groupID]['time'], list) or not isinstance(reportData[groupID]['reported'], list):
+                reportData[groupID]={'time':[], '開始回報':1 ,'reported':[], 'day':day}
             reportData[groupID]['time'].append(nsettime)
             reportData[groupID]['time'] = sorted(reportData[groupID]['time'])
             LineMessage = str(ID)+'號弟兄,已設定時間:' + settime[:-3] 
