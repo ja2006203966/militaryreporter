@@ -56,7 +56,7 @@ def handle_message(event):
         if not isinstance(reportData[groupID]['time'], list) or not isinstance(reportData[groupID]['reported'], list):
             reportData[groupID]={'time':[], '開始回報':1 ,'reported':[], 'day':day}
         for t in reportData[groupID]['time']:
-            if (now in range(t-1,t+60) ) and (not t in reportData[groupID]['reported']) :
+            if (now in range(t,t+60) ) and (not t in reportData[groupID]['reported']) :
                 LineMessage = '開始自動回報 \n'
                 
                 num =[i for i in reportData[groupID].keys() if isinstance(i, int)]
