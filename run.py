@@ -47,14 +47,15 @@ def handle_message(event):
     else:
         if not reportData.get(groupID): # 如果此群組為新加入，會創立一個新的儲存區
             reportData[groupID]={'time':[], '開始回報':1 ,'reported':[], 'day':day, 'clock':set()}
-        elif reportData[groupID]['clock']:
+        if reportData[groupID]['clock']:
             reportData[groupID]['notify'] = list(reportData[groupID]['clock'])[0]
-        elif not day == reportData[groupID]['day']:
+        if not day == reportData[groupID]['day']:
             reportData[groupID]['day'] = day
             reportData[groupID]['reported'] = []
-        elif not reportData[groupID]['notify']:
+        if not reportData[groupID]['notify']:
             reportData[groupID]['notify'] = 999999
-        notify = reportData[groupID]['notify']
+        notify = reportData[groupID]["notify"]
+#         notify = reportData[groupID]['notify']
         if (now in range(notify, notify+5)) and reportData[groupID]["開始回報"]:
             num = [i for i in reportData[groupID].keys() if isinstance(i, int)]
             for data in [reportData[groupID][number] for number in sorted(num)]:
