@@ -55,13 +55,10 @@ def handle_message(event):
             reportData[groupID]['reported'] = []
         for t in reportData[groupID]['time']:
             if T in range(t,t+60) and t not in reportData[groupID]['reported'] :
-                try:
-                    reportData[groupID]['reported'].append(t)
-                    num =[i for i in reportData[groupID].keys() if isinstance(i, int)]
-                    for data in [reportData[groupID][number] for number in sorted(num)]:
-                        LineMessage = LineMessage + data[t] +'\n\n'
-                except BaseException as err:
-                    LineMessage = '錯誤原因: '+str(err)
+                reportData[groupID]['reported'].append(t)
+                num =[i for i in reportData[groupID].keys() if isinstance(i, int)]
+                for data in [reportData[groupID][number] for number in sorted(num)]:
+                    LineMessage = LineMessage + data[t] +'\n\n'
 #         if time[:-3] in reportData[groupID]['time'] and reportData[groupID]['開始回報'] and time[:-3] not in reportData[groupID]['reported'] :
 #             try:
 #                 reportData[groupID]['reported'].append(time[:-3])
@@ -145,6 +142,7 @@ def handle_message(event):
             msg =  receivedmsg.split("其餘內容\n")[-1]
             reportData[groupID][ID][nsettime] = reportData[groupID][ID]['msg'] + '\n' + msg
             reportData[groupID]['time'].append(nsettime)
+            reportData[groupID]['time'] = sorted(reportData[groupID]['time'])
             LineMessage = str(ID)+'號弟兄,已設定時間:' + settime[:-3] 
 #         elif '設定回報時間' in receivedmsg and '設定時間' in receivedmsg and '其餘內容' in receivedmsg:
 #             time = receivedmsg.split('設定時間')[-1][1:9]
@@ -182,7 +180,7 @@ def handle_message(event):
             LineMessage = '回報時間統計: '
             for i in reportData[groupID]['time']:
                 t = str(i//60)+':'+str(i%60)
-                LineMessage = LineMessage + i +'\n'
+                LineMessage = LineMessage + t +'\n'
             
         elif '清除資料' in receivedmsg and len(receivedmsg)==4:
 #             reportData[groupID]['time'] = []
